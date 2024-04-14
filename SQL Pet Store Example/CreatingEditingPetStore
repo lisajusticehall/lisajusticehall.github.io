@@ -40,11 +40,6 @@ CREATE TABLE Appointment (
 
 
 
-
-
-
-
-
 --To populate the tables, I would use these statements:
 INSERT INTO PetGroomer (employee_id, first_name, last_name, phone_number)
 VALUES (111, 'Joe', 'Customer', '867-5309'),
@@ -60,8 +55,6 @@ VALUES (1, 'Ihava', 'Dog', '555-1111'),
        (4, 'Buying', 'Dogfood', '555-4444'),
        (5, 'Saving', 'Animals', '555-5555');
  
-
-
 
 
 INSERT INTO Animal (animal_id, breed, age, name)
@@ -106,7 +99,7 @@ SELECT COUNT(*),
 FROM Customer 
 GROUP BY first_name, last_name;
  
-To modify the age field:
+--To modify the age field:
 UPDATE Animal 
 SET age = age + 1;
 
