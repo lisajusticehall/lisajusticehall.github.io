@@ -1,0 +1,129 @@
+--To create these tables, these are the SQL statements.
+CREATE TABLE PetGroomer (
+    employee_id INT PRIMARY KEY,
+    first_name VARCHAR(50),
+    last_name VARCHAR(50),
+    phone_number VARCHAR(20)
+);
+ 
+CREATE TABLE Customer (
+    customer_id INT PRIMARY KEY,
+    first_name VARCHAR(50),
+    last_name VARCHAR(50),
+    phone_number VARCHAR(20)
+);
+ 
+CREATE TABLE Animal (
+    animal_id INT PRIMARY KEY,
+    breed VARCHAR(50),
+    age INT,
+    name VARCHAR(50)
+);
+ 
+
+CREATE TABLE Appointment (
+    appointment_id INT PRIMARY KEY,
+    groomer_id INT,
+    customer_id INT,
+    animal_id INT,
+    service_type VARCHAR(10),
+    service_cost DECIMAL(5,2),
+    appointment_date DATE,
+    FOREIGN KEY (groomer_id) REFERENCES PetGroomer(employee_id),
+    FOREIGN KEY (customer_id) REFERENCES Customer(customer_id),
+    FOREIGN KEY (animal_id) REFERENCES Animal(animal_id)
+);
+ 
+
+
+
+
+
+
+
+
+
+
+
+--To populate the tables, I would use these statements:
+INSERT INTO PetGroomer (employee_id, first_name, last_name, phone_number)
+VALUES (111, 'Joe', 'Customer', '867-5309'),
+       (112, 'Pet', 'Washer', '867-5333'),
+       (113, 'Dog', 'Friend', '867-5331'),
+       (114, 'Dogneedsa', 'Bath', '867-5334'),
+       (115, 'Animals', 'Athome', '867-5335');
+ 
+INSERT INTO Customer (customer_id, first_name, last_name, phone_number)
+VALUES (1, 'Ihava', 'Dog', '555-1111'),
+       (2, 'Responsible', 'Owner', '555-2222'),
+       (3, 'Petsat', 'Thewash', '555-3333'),
+       (4, 'Buying', 'Dogfood', '555-4444'),
+       (5, 'Saving', 'Animals', '555-5555');
+ 
+
+
+
+
+INSERT INTO Animal (animal_id, breed, age, name)
+VALUES (101, 'Dalmation', 3, 'Pongo'),
+       (102, 'Poodle', 5, 'Luna'),
+       (103, 'Mix', 7, 'Spot'),
+      (104, 'Chi', 1, 'Tank'),
+      (105, 'Doodle', 2, 'Hank');
+ 
+
+INSERT INTO Appointment (appointment_id, groomer_id, customer_id, animal_id, service_type, service_cost, appointment_date)
+VALUES (881, 111, 1, 101, 'Both', 20.00, '2024-02-25'),
+       (882, 112, 2, 102, 'Haircut', 11.00, '2024-03-01'),
+       (883, 113, 3, 103, 'Bath', 11.00, '2024-03-05'),
+       (884, 114, 4, 104, 'Both', 20.00, '2024-03-10'),
+       (885, 115, 5, 105, 'Haircut', 11.00, '2024-03-15');
+ 
+
+
+
+--To produce a list with SELECT and Where:
+SELECT *
+ FROM PetGroomer 
+WHERE last_name = 'Washer';
+ 
+--To produce a list with SELECT and ORDER BY:
+SELECT * 
+FROM Customer 
+ORDER BY last_name;
+ 
+
+--To produce a list with SELECT and  GROUP BY:
+SELECT service_type, COUNT(*)
+ FROM Appointment 
+GROUP BY service_type;
+ 
+
+--To query a count for a customer name:
+SELECT COUNT(*),
+ first_name,
+ last_name 
+FROM Customer 
+GROUP BY first_name, last_name;
+ 
+To modify the age field:
+UPDATE Animal 
+SET age = age + 1;
+
+ 
+--To ADD a Column:
+ALTER TABLE Customer 
+ADD COLUMN email VARCHAR(100);
+ 
+
+--To REMOVE a Column:
+ALTER TABLE Customer 
+DROP COLUMN email;
+ 
+--To DELETE Rows:
+DELETE FROM PetGroomer 
+WHERE employee_id = 112;
+ 
+--To DELETE a Table:
+DROP TABLE Animal;
+ 
