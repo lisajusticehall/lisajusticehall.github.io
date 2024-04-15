@@ -6,7 +6,7 @@
  #### - Associate in Arts
  #### - Associate in Science
 
-#### - University of the Cumberlands
+### - University of the Cumberlands 2024
  #### - Bachelors Information Technology
  #### - Emphasis Management
 🖥️
