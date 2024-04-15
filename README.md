@@ -1,6 +1,6 @@
 # Analyst
 
-![image](https://github.com/lisajusticehall/lisajusticehall.github.io/assets/146501861/3377f250-ee68-4c88-bf2f-bfd30e2f5dc6 | width=100)
+![image](https://github.com/lisajusticehall/lisajusticehall.github.io/assets/146501861/3377f250-ee68-4c88-bf2f-bfd30e2f5dc6) | width=100
 ### Education
 #### - Big Sandy Community and Technical College 2019
  #### - Associate in Arts
