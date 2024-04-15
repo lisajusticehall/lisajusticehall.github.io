@@ -1,4 +1,4 @@
-# Analyst
+# Analyst 🤓
 
 🎓
 ### Education
