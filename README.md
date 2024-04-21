@@ -2,11 +2,8 @@
 
 🎓
 ### Education
-#### - Big Sandy Community and Technical College 2019
- #### - Associate in Arts
- #### - Associate in Science
 
-### - University of the Cumberlands 2024
+### - University of the Cumberlands 
  #### - Bachelors Information Technology
  #### - Emphasis Management
 🖥️
