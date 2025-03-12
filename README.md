@@ -1,10 +1,14 @@
-# Analyst 🤓
+# Data Science Enthusiast 🤓
 
 🖥️
-### Work
- #### Associate Configuration Analyst for Molina Healthcare
+### Education
+ #### Master's Student Data Science University of the Cumberlands
+ #### Bachelors of Science Information Technology Emphasis Business University of the Cumberlands
 
 ### Interests
  #### Data
  #### Analytics
+ #### Healthcare
+ #### R
+ #### Statistics
  
