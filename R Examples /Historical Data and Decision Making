@@ -1,0 +1,216 @@
+{
+ "cells": [
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Historical Data and Decision Making \n",
+    "\n",
+    "Central to statistics is the ability to acquire meaning from collected data. To make sense of chance and unforeseen occurrences, humans have grappled with understanding the likelihood of events for millennia. Data distributions allow scientists to visualize data and draw meaning from their observations. In contrast to simply visualizing data, statistics enable data scientists to form equations that can further their understanding. Computing attributes like variance or skewness of a distribution deepens the understanding of complex problems. \n",
+    "\n",
+    "A vital component to quickly computing statistical concepts is using programs like R or Octave. For this example, this analysis will use R to draw more meaning from examples and provide context to the explanations. Using a dataset of historical data about stock prices, this analysis will explore various concepts. The data set includes rows for skewness, median, mean, standard deviation, and last price. Below is R code that will load the dataset into a new project and appropriately name the headers; note header = FALSE in the read.csv command; if this is not included, R will interpret the first row of data as the header for each row. \n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "vscode": {
+     "languageId": "r"
+    }
+   },
+   "outputs": [],
+   "source": [
+    "> historicaldata <- read.csv(\"C:\\\\Users\\\\lisaj\\\\Downloads\\\\dataG2.csv\", header = FALSE)\n",
+    "> colnames(historicaldata) <- c(\"Skewness\", \"Median\", \"Mean\", \"Standard_Deviation\", \"Last_Price\")\n"
+   ]
+  },
+  {
+   "attachments": {
+    "image.png": {
+     "image/png": "iVBORw0KGgoAAAANSUhEUgAAAywAAACtCAYAAABSivt9AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAAEnQAABJ0Ad5mH3gAADM9SURBVHhe7d1PaBvnvjfw73k3tkqgQxKIJ4tEzcJxwiWMAif32hDHMQxEWbT2XU1TSpyGgmIvjAVRnZi4VMVNKoNMFlEMxamCaapVrXYRFwSuTgpW/4AlwsVxskjVLI4caINaypGzOnfx6nnuzGgkS46djO3vBwaSmUdjzWjmmec3z7+/tba2/htEREREREQu9P/sK4iIiIiIiNyCAQsREREREbkWAxYiIiIiInItBixERERERORaDFiIiIiIiMi1GLAQEREREZFrMWAhIiIiIiLXYsBCRERERESuxYCFiIiIiIhciwELERERERG5FgMWIiIiIiJyLQYsRERERETkWgxYiIiIiIjItRiwEBERERGRazFgISIiIiIi12LAQkRERERErsWAhYiIiIiIXIsBCxERERERuRYDFiIiIiIici0GLERERERE5FoMWIiIiIiIyLUYsBARERERkWsxYCEiIiIiItdiwEJERERERK7FgIWIiIiIiFyLAQsREREREbkWAxYiIiIiInItBixERLTlqKqKZDKJXC4HXdcRi8WQy+UwOztrT7qlhMNhzM7OIpfLIZfLIRaL2ZMQEW06DFiIiGjLeeutt3Djxg3k83kMDAzg3r17mJychKqq9qQN8/l8iMViCAQC9k0vRSgUQjwedzyWI0eO4MGDB9A0DXfu3EFHR4c9CRHRpvO31tbWf9tXEhERuVE0GkV3d7d9tYWmafLfmUwGMzMziEQiCIVCOHnyJPx+vyV9I3RdRzAYxOXLl5HNZu2bXxpd1zEwMIALFy6gUCjYNwMAAoEADMNAV1eXfRMR0abCGhYiIto0pqenUSqVkM/noWmaZcnlcpa0uq7D4/EgEokAAA4fPoxffvnFkqZRAwMDuH379isNVgAglUrh/v37uHr1qn0TUK4FOnXqFMbGxuybiIg2HQYsRES0aWSzWaRSKXi93oomWZcuXbL8//jx48jn8/L/Xq8X9+7dQzgcdmxOtRrDMKAoChKJhH3TK3Hz5k1omlZxLLqu48MPP8RHH32EVCpl2UZEtBkxYCEiok1ldHQU+XweZ8+etRTWC4WCpTlYa2sr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88Hj8SCXy+GHH36AYRi4d++eHNL9q6++QrFYxB9//FH1pYbIi6uxH6eu6xgYGJB5kTk/QQP7qzed2ezsLJ4+fWoZOIRoq2PAQkR1SafTSCQSDfUbof8jhqyuFZCth3g8jn/961+OwQxRI7bSPe/z+fDBBx9UDVg2CzGiZH9//4a9kCByIzYJI6K6jI2NrTpfCL1aPp8Pe/bswccff2zfRC4RCoVqDpvtJlvpnh8cHMTU1JR99aYzODiImZkZBiu07TBgIaK6pFIpfPfdd45tqqk20Qbf6/Va+vmsJ1VVMTg4KDs9k7sYhoFkMomTJ09W7RviNlvhnvf5fIhGo/jiiy9WbfrqdqFQSE6wS7TdsEkYETVE13UcP37c0l6bqnNq92/u37QexOhw09PTDFbWiehzMT8/j5mZGdlfoVZfqVp0Xcf//M//4MSJExgeHt5UfX54z796gUAAxWKxoj8L0XbBgIWIiMjEMAzs27cPLS0tOHToEP744w8MDQ3hypUr2Lt37wv1QxIB7GYKWIiIXjU2CSMiIjJJJBKIRCJobm6GoigYGhqqWnOVy+WqLmKgBSIiejEMWIiIiBy88cYbyGazMlh544038PjxY0saTdOqLi9SE0NERP+HAQsREZEDVVVx//59+W9VVfHTTz/ZkxER0QZjwEJERGQj5usQs4mfOHECAPCPf/wD4XDYkrYRYib21WZdJyKi/8OAhYiIyObYsWMoFouyOdjDhw9RKpXw5Zdf4vvvv7cnX1U0GkUul5Ozmo+Pj1fM4E5ERM44ShgREREREbkWa1iIiIiIiMi1GLAQEREREZFrMWAhIiIiIiLXYsBCRERERESuxYCFiIiIiIhciwELERERERG5FgMWIiIiIiJyLQYsRERERETkWgxYiIiIiIjItRiwEBERERGRazFgISIiIiIi12LAQkRERERErsWAhYiIiIiIXIsBCxERERERuRYDFiIiIiIici0GLERERERE5FoMWIiIiIiIyLUYsBARERERkWsxYCEiIiIiItdiwEJERERERK7FgIWIiIiIiFyLAQsREREREbkWAxYiIiIiInItBixERERERORaDFiIiIiIiMi1GLAQEREREZFrMWAhIiIiIiLXYsBCRERERESuxYCFiIiIiIhciwELERERERG5FgMWIiIiIiJyLQYsRERERETkWgxYiIiIiIjI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TM321+Qe6XQa9+7dg67raG9vB8rNTbxeb80+DdUYhiE7hx84cMC194Cu6zh+/PimbxpE2wvzV7JjwEJERFua6PD90Ucf4fPPP8fk5CQmJycRj8fxww8/vFA/D7cHLEREWwGbhBER0ZZ2/Phx3L9/H9lsFktLS+jq6gLK83f8+OOPMp1hGBUTYpoXtqUnIno1GLAQEdGW1traKudTWlhYQFtbm+yLZm5ykkgkKibENC+cHJOI6NVgwEJERFva/v375Uhe09PTKJVKOH/+PPL5vD0pERG5EAMWIiLasgzDkLOhA0ChUMDDhw/R1tYma13WSi3PHK8oStVJ+IiI6MUxYCEioi1reHhYzpcifPHFF0B56N+1SiaTmJ2dhdfrhaIomJ2dRTKZtCcjIqJ1wFHCiIiIiIjItVjDQkRERERErsWAhYiIiIiIXIsBCxERERERuRYDFiIiIiIici0GLERERERE5FoMWIiIiIiIyLUYsBARERERkWsxYCEiIiIiItdiwEJERERERK7FgIWIiIiIiFyLAQsREREREbkWAxYiIiIiInItBixERERERORaDFiIiIiIiMi1GLAQEREREZFrMWAhIiIiIiLXYsBCRERERESuxYCFiIiIiIhciwELERERERG5FgMWIiIiIiJyLQYsRERERETkWgxYiIiIiIjItRiwEBERERGRazFgISIiIiIi12LAQkRERERErsWAhYiIiIiIXIsBCxERERERuRYDFiIiIiIici0GLERERERE5FoMWIiIiIiIyLUYsBARERERkWsxYCEiIiIiItf6X9hDvLZ7TQe2AAAAAElFTkSuQmCC"
+    }
+   },
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### Understanding Variance and Skewness\n",
+    "\n",
+    "Variance is a way to understand how spread-out data is (Nield, 2022). Variance answers how close or far apart values are in a distribution (Bruce & Bruce, 2019). Data scientists may be tasked with measuring variance to help make more informed decisions based on data distribution. Evaluating whether variability is real or random is a valuable tool when interpreting distributions, their meanings, and the validity of the information produced. Below is an example of variance and the R code that simplifies the computation of this statistical concept. \n",
+    "\n",
+    "![image.png](attachment:image.png)\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "vscode": {
+     "languageId": "r"
+    }
+   },
+   "outputs": [],
+   "source": [
+    "> Variance_last_price <- var(historicaldata$Last_Price)\n",
+    "> cat(\"Variance of Last Price\", Variance_last_price, \"\\n\")\n",
+    "The variance of Last Price 0.1113323"
+   ]
+  },
+  {
+   "attachments": {
+    "image.png": {
+     "image/png": "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"
+    }
+   },
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "A distribution may “skew” to one side or another when the tail of a distribution is longer than the other (Bruce & Bruce, 2019). Skewness is how we measure the asymmetry of the distribution. A positive skew would mean that the distribution skews to the right, and data points could be observed on the right side of the distribution. A negative skew would imply that the distribution skews to the left; data points could be observed on the left side of a distribution. Zero skewness would indicate that a distribution is perfectly symmetrical. Below is the formula to calculate the skewness of a distribution, followed by R commands that simplify the computation. \n",
+    "\n",
+    "![image.png](attachment:image.png)\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "vscode": {
+     "languageId": "r"
+    }
+   },
+   "outputs": [],
+   "source": [
+    "> library(e1071)\n",
+    "> skewnesslastprice <- skewness(historicaldata$Last_Price)\n",
+    "> cat(\"Skewness of Last Price\", skewnesslastprice, \"\\n\")\n",
+    "Skewness of Last Price -0.2427279"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### Interpreting Data in Context\n",
+    "\n",
+    "The example for this analysis has labeled the columns of data according to their meaning. Data may be misinterpreted without adding context to these individual columns. For data analysis, context is key to drawing insights and driving effective decision-making. Let us further investigate the meaning of the data in each column to further the understanding of this analysis. Columns represent the skewness, median, mean, standard deviation, and the last price of individual stocks. \n",
+    "\n",
+    "In our data sets “skewness” column, we see negative and positive values represented. The lower the negative value, the more the skew of that stock price is to the left and the potentially lower returns. That stock may have experienced losses. The higher the positive value, the more the skew of that stock is to the right and the potentially higher the returns. That stock may have experienced gains. This data may be valuable to investors, as they may be interested in the past returns of that data in terms they can understand. \n",
+    "\n",
+    "The median column in the dataset represents the middle of that stock distribution. Fifty percent of the values are below this value, and fifty percent are above this value. This is key to understanding because stocks may have volatility, meaning they may have sharp increases or decreases that may affect other insights. Outliers would not affect the median. Those interested in a particular stock may find this insight meaningful in context; they may accept some risks, significantly if that specific stock was affected by circumstances beyond their control for a short period. For example, COVID-19 affected stock prices due to transportation issues or material shortages; the median could help investors understand better the added context.\n",
+    "\n",
+    "The mean column represents the average price of that stock. Outliers can affect the mean but indicate the stock's average price within the data interpretation. Investors may be interested in what they can expect to see. If the cost of a stock is lower than average, they may interpret it as a suitable time to purchase that stock. They may also be interested in comparing the mean to other columns in the data set within a context. \n",
+    "\n",
+    "The standard deviation column illustrates the variability of stock prices relative to the mean of the stock. This illustrates how close values are to the average of the stock. For example, different number sets could have the same mean; the standard deviation can help differentiate how the values deviate from the mean. A low standard deviation tells you that values are close to the mean, and a high standard deviation tells you that values are spread further from the mean. In context, the standard deviation can be valuable for quickly interpreting whether a stock has price variability. Evaluating the standard deviation and the other column values can provide a well-rounded view of the stock’s performance. \n",
+    "\n",
+    "The last price column is valuable because it provides context for those interpreting stock data. It gives an immediate look at the stock’s current standing. It provides further context for the mean, standard deviation, skewness, and median. If the stock price is close to the mean and median, the standard deviation is low, and the distribution skewness is to the right, it can illustrate that the stock tends to give an investor a lower risk. A higher-risk stock could have a high standard deviation and still skew to the right; the mean could be higher than the stock’s median, the skew could still be a positive value, and the last price could be higher than the mean and median. This column gives investors perspective on analyzing the stock’s current standing in relation to the other available data.\n",
+    "\n",
+    "### Drawing Conclusions from Data\n",
+    "\n",
+    "Concluding data in meaningful ways that explain the data in context is essential to statistical analysis. For instance, subtracting the values in the last price column of our dataset from the values in the mean column can let us understand the overall performance of the stock. If a stock’s last price is above the mean, we will anticipate that the stock has a positive value; the previous price is greater than the stock’s average performance. If a stock’s last price is below the mean, we will expect to see a negative value if the last price is less than the stock’s average performance. To illustrate how this would appear, it may be necessary to use which.min() and which.max() functions in R.  We can use R to help locate these rows and print the row information for further interpretation, as described below.\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "vscode": {
+     "languageId": "r"
+    }
+   },
+   "outputs": [],
+   "source": [
+    "> S <- historicaldata$Last_Price - historicaldata$Mean\n",
+    "> I_1 <- which.min(S)\n",
+    "> I_2 <- which.max(S)\n",
+    "> row_I_1 <- historicaldata[I_1, ]\n",
+    "> row_I_2 <- historicaldata[I_2, ]\n",
+    "> cat(\"I_1 (lower value) is row:\", I_1, \"\\n\")\n",
+    "I_1 (lower value) is row: 2050 \n",
+    "> print(row_I_1)\n",
+    "       Skewness   Median      Mean Standard_Deviation Last_Price\n",
+    "2050 -0.5489826 0.621074 0.5744321          0.2024042 0.02557281\n",
+    "> cat(\"I_2 (higher value) is at row:\", I_2, \"\\n\")\n",
+    "I_2 (higher value) is at row: 1817 \n",
+    "> print(row_I_2)\n",
+    "     Skewness    Median      Mean Standard_Deviation Last_Price\n",
+    "1817  4.08087 0.1030399 0.1179646         0.08939894          1"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "The output above shows that row 2050 is the least-valued stock. The stock is less than the mean and median at its last price. The skewness of the stock further illustrates this; it skews to the left, and most of the values will be found on the left side of the distribution. The standard deviation is 0.2; this further illustrates that values are spread further from the mean. Row 1817, in contrast, is right-skewed; most of its values will be found on the right side of the distribution. Its last price is greater than both its median and mode. Its standard deviation also illustrates that its data is closer to the mean than the stock in row 2050. By comparing these two stocks, investors would interpret that the stock in row 1817 is less volatile than row 2050 and prefer to purchase that particular stock. For this reason, the difference between the last price and the mean would be a better indication of performance than the skewness of a particular stock. \n",
+    "\n",
+    "### Key Takeaway\n",
+    "\n",
+    "It is important to note that a higher skew does not always indicate that a stock is a better purchase. Fractional increases in low-value stock can illustrate that skew does not determine profitability. If we examine row 1144, we can see that the skewness is most positively skewed. However, the difference between the last price and the mean and median are unremarkable. Using R, let us view the attributes of row 1144 in contrast to row 2050. \n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "vscode": {
+     "languageId": "r"
+    }
+   },
+   "outputs": [],
+   "source": [
+    "> print(historicaldata[1144,])\n",
+    "     Skewness      Median        Mean Standard_Deviation  Last_Price\n",
+    "1144 72.72923 0.000106703 0.000341332         0.01374237 0.000249594\n",
+    "> print(historicaldata[2050,])\n",
+    "       Skewness   Median      Mean Standard_Deviation Last_Price\n",
+    "2050 -0.5489826 0.621074 0.5744321          0.2024042 0.02557281\n",
+    "> print(historicaldata[1817, ])\n",
+    "     Skewness    Median      Mean Standard_Deviation Last_Price\n",
+    "1817  4.08087 0.1030399 0.1179646         0.08939894          1"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "When interpreted in context, it is easy to see that even with a smaller skewness, the value of 1817 is a better purchase option than row 1144. The standard deviation of row 1144 indicates that the values are closely clustered, and incremental changes in tiny numbers can inflate the interpretation of the skewness (Döpke & Pierdzioch, 2001). Further underscoring the need to understand data in context. Outliers in the distribution could also be attributed to the inflation of skewness. \n",
+    "\n",
+    "### Conclusion\n",
+    "\n",
+    "Data scientists add valuable perspective to the interpretation of data. This analysis underscored the usefulness of variance, skewness, mean, median, and standard deviation in aiding those interpretations and data presentations. R is a powerful statistical program designed to assist in the computation and visualization of these concepts to give perspective and context to the data under interpretation. Well-formed analysis can provide decision-makers with actionable insights into business or support hypotheses and conclusions in studies or experiments. Statistical analysis is a tool that aids data scientists in the modern world; it can not only be insightful but also prophetic. \n",
+    "\n",
+    "### References\n",
+    "\n",
+    "Bruce, P., & Bruce, A. (2019). Practical statistics for data scientists: 50+ essential concepts using R and Python (2nd ed.). O'Reilly Media.\n",
+    "\n",
+    "Döpke, J., & Pierdzioch, C. (2001, July ). Duesternbrooker Weg 120 24105 Kiel Germany (Kiel Working Paper No. 1059).\n",
+    "\n",
+    "Meyer, D., Dimitriadou, E., Hornik, K., Weingessel, A., & Leisch, F. (2023). e1071: Misc functions of the Department of Statistics, Probability Theory Group (Formerly: E1071), TU Wien (Version 1.7-13) [R package]. Comprehensive R Archive Network (CRAN). https://CRAN.R-project.org/package=e1071\n",
+    "\n",
+    "Nield, T. (2022). Essential Math for Data Science (1st ed.). O'Reilly Media.\n",
+    "\n",
+    "R Core Team. (2023). R: A language and environment for statistical computing. R Foundation for Statistical Computing. https://www.R-project.org/\n",
+    "\n",
+    "Thulin, M. (2025). Modern Statistics with R (2nd ed.). CRC Press.\n",
+    "\n",
+    "Wickham, H., François, R., Henry, L., Müller, K., & Vaughan, D. (2023). *dplyr: A grammar of data manipulation* (Version 1.1.2) [R package]. CRAN. https://CRAN.R-project.org/package=dplyr\n",
+    "\n",
+    "Wickham, H. (2023). *stringr: Simple, consistent wrappers for common string operations* (Version 1.5.0) [R package]. CRAN. https://CRAN.R-project.org/package=stringr\n",
+    "\n",
+    "\n"
+   ]
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "R",
+   "language": "R",
+   "name": "ir"
+  },
+  "language_info": {
+   "name": "R",
+   "version": "3.13.1"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 2
+}
