@@ -1,4 +1,4 @@
-# Data Science Enthusiast 🤓
+# Analyst 🤓
 
 🖥️
 ### Education
